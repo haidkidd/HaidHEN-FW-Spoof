@@ -1,2 +1,2 @@
-# Injetor de goldhen (com firmware spoofer BETA)
-Creditos: Team haidkidd
+# Injetor de haidHEN ou hen (com firmware spoofer BETA)
+Creditos: Team haidkidd e PS4Hen
