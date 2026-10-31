@@ -136,6 +136,59 @@
       code {
         color: #9fb3d0;
       }
+
+      /* Escolha do payload: o exploit so comeca depois do clique. */
+      #spin { display: none; }
+      #spin.active { display: block; }
+      #choice {
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+      }
+      #choice h1 {
+        color: #e6ebf2;
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0 0 10px;
+      }
+      #choice p { margin: 0 0 23px; color: #98a8b7; }
+      .hen-buttons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+      .hen-button {
+        min-width: 175px;
+        padding: 17px 22px;
+        border-radius: 9px;
+        border: 1px solid #34533e;
+        background: #193a2b;
+        color: #baf3ca;
+        font: 700 19px/1.2 "Segoe UI", system-ui, sans-serif;
+        cursor: pointer;
+      }
+      .hen-button:focus, .hen-button:hover {
+        outline: 2px solid #7fd0a0;
+        background: #215039;
+      }
+      #btn-haidhen { border-color: #334b62; background: #1b3448; color: #bbdafa; }
+      #btn-haidhen:hover, #btn-haidhen:focus {
+        outline-color: #8cbaed;
+        background: #25435c;
+      }
+      .hen-button small {
+        display: block;
+        font-size: 12px;
+        font-weight: 400;
+        opacity: .8;
+        margin-top: 6px;
+      }
+      .hen-button:disabled { opacity: .5; cursor: default; }
+      body.done #spin.active, body.fail #spin.active { display: none; }
     </style>
   </head>
   <body>
@@ -147,6 +200,14 @@
         height="28"
       /><b>Team haidkidd</b>
     </div>
+    <div id="choice">
+      <h1>Escolha o HEN</h1>
+      <p>Selecione o payload para iniciar o desbloqueio.</p>
+      <div class="hen-buttons">
+        <button id="btn-hen" class="hen-button" type="button">HEN<small>hen.bin</small></button>
+        <button id="btn-haidhen" class="hen-button" type="button">HaidHEN<small>haidhen.bin</small></button>
+      </div>
+    </div>
     <div id="spin"></div>
     <div id="msg">Restart your console</div>
     <div id="wrap">
@@ -154,7 +215,37 @@
       <div id="out"></div>
     </div>
     <script type="module">
-      import "./jb.js?v=19";
+      const choice = document.getElementById("choice");
+      const spin = document.getElementById("spin");
+      const btnHen = document.getElementById("btn-hen");
+      const btnHaidhen = document.getElementById("btn-haidhen");
+      let started = false;
+
+      async function startHen(name) {
+        if (started || (name !== "hen" && name !== "haidhen")) return;
+        started = true;
+        // Fragmentos (#hen / #haidhen) continuam funcionando com AppCache offline.
+        // Tambem preservam a escolha durante os auto-reloads do exploit.
+        location.hash = name;
+        choice.style.display = "none";
+        spin.classList.add("active");
+        btnHen.disabled = true;
+        btnHaidhen.disabled = true;
+        try {
+          await import("./jb.js?v=20");
+        } catch (error) {
+          spin.classList.remove("active");
+          document.body.className = "fail";
+          document.getElementById("msg").textContent =
+            "Erro ao carregar jb.js: " + String(error.message || error);
+        }
+      }
+
+      btnHen.addEventListener("click", () => startHen("hen"));
+      btnHaidhen.addEventListener("click", () => startHen("haidhen"));
+
+      const resume = location.hash.substring(1);
+      if (resume === "hen" || resume === "haidhen") startHen(resume);
     </script>
   </body>
 </html>

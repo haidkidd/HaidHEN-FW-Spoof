@@ -199,7 +199,15 @@ let allDone = false,
 
     const KPATCH_FILE =
       "patches/" + (off.kpatch || fwKey.replace(".", "") + ".bin");
-    const PAYLOAD_FILE = off.payload || "payload.bin";
+    // A escolha feita no jb.html tem prioridade sobre a tabela de firmware.
+    // Usa uma lista fechada de nomes para evitar carregamento arbitrario.
+    const payloadChoice = location.hash.substring(1);
+    const PAYLOAD_FILE =
+      payloadChoice === "hen"
+        ? "hen.bin"
+        : payloadChoice === "haidhen"
+          ? "haidhen.bin"
+          : off.payload || "payload.bin";
     const needPatch = ["k_sysent_661", "k_jmp_rsi"].filter(
       (k) => off[k] === undefined,
     );
