@@ -1,8 +1,8 @@
 MIT License
 
-Copyright (c) 2026 raw13g
+Copyright (c) 2026 Team haidkidd
 
-This license applies to the code in this repository authored by raw13g. Bundled
+This license applies to the code in this repository authored by haidkidd. Bundled
 third-party components retain their own licenses and are not relicensed here:
 the payload binaries (payload2.bin, goldhen.bin), the kernel patch blobs in
 patches/, and the primitive files core.js, mem.js and int64.js.
