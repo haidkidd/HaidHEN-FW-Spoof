@@ -224,15 +224,14 @@
       async function startHen(name) {
         if (started || (name !== "hen" && name !== "haidhen")) return;
         started = true;
-        // Fragmentos (#hen / #haidhen) continuam funcionando com AppCache offline.
-        // Tambem preservam a escolha durante os auto-reloads do exploit.
-        location.hash = name;
+        // Escolha guardada so nesta pagina; a URL continua jb.html.
+        window.__jbSelectedPayload = name;
         choice.style.display = "none";
         spin.classList.add("active");
         btnHen.disabled = true;
         btnHaidhen.disabled = true;
         try {
-          await import("./jb.js?v=20");
+          await import("./jb.js?v=21");
         } catch (error) {
           spin.classList.remove("active");
           document.body.className = "fail";
@@ -244,8 +243,32 @@
       btnHen.addEventListener("click", () => startHen("hen"));
       btnHaidhen.addEventListener("click", () => startHen("haidhen"));
 
-      const resume = location.hash.substring(1);
-      if (resume === "hen" || resume === "haidhen") startHen(resume);
+      // Um link antigo com #hen / #haidhen nao deve executar automaticamente.
+      // Remove o fragmento sem navegar nem recarregar a pagina.
+      if (location.hash === "#hen" || location.hash === "#haidhen") {
+        try {
+          history.replaceState(null, "", location.pathname + location.search);
+        } catch (e) {}
+      }
+
+      // Retoma APENAS uma tentativa automatica do exploit, em poucos segundos.
+      // Depois de reiniciar/abrir o navegador normalmente, exige novo clique.
+      let resume = null;
+      try {
+        const key = "jb-retry-payload-v2";
+        const raw = sessionStorage.getItem(key);
+        sessionStorage.removeItem(key); // consumo unico
+        if (raw) {
+          const data = JSON.parse(raw);
+          const nav = window.performance && window.performance.navigation;
+          const isReload = !nav || nav.type === 1;
+          if (isReload && Date.now() < data.expires &&
+              (data.name === "hen" || data.name === "haidhen")) {
+            resume = data.name;
+          }
+        }
+      } catch (e) {}
+      if (resume) startHen(resume);
     </script>
   </body>
 </html>

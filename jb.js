@@ -199,9 +199,9 @@ let allDone = false,
 
     const KPATCH_FILE =
       "patches/" + (off.kpatch || fwKey.replace(".", "") + ".bin");
-    // A escolha feita no jb.html tem prioridade sobre a tabela de firmware.
+    // O clique em jb.html define a escolha em memoria, sem alterar a URL.
     // Usa uma lista fechada de nomes para evitar carregamento arbitrario.
-    const payloadChoice = location.hash.substring(1);
+    const payloadChoice = window.__jbSelectedPayload;
     const PAYLOAD_FILE =
       payloadChoice === "hen"
         ? "hen.bin"
@@ -300,6 +300,16 @@ let allDone = false,
         return false;
       }
       mark("AUTO-RELOAD", "why=" + why + " reload=" + (n + 1) + "/" + RETRY_MAX);
+      // Mantem o payload escolhido apenas para o reload automatico imediato.
+      // Nao persiste a selecao entre reinicializacoes do console.
+      try {
+        if (payloadChoice === "hen" || payloadChoice === "haidhen") {
+          sessionStorage.setItem(
+            "jb-retry-payload-v2",
+            JSON.stringify({ name: payloadChoice, expires: Date.now() + 12000 }),
+          );
+        }
+      } catch (e) {}
       setTimeout(() => {
         try {
           location.reload();
