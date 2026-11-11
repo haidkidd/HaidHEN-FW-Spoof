@@ -180,6 +180,9 @@
         outline-color: #8cbaed;
         background: #25435c;
       }
+      #btn-games { border-color: #6b5137; background: #3b2d20; color: #f1d1a8; }
+      #btn-games:hover, #btn-games:focus { outline-color: #e7b475; background: #51402b; }
+
       .hen-button small {
         display: block;
         font-size: 12px;
@@ -201,11 +204,12 @@
       /><b>Team haidkidd</b>
     </div>
     <div id="choice">
-      <h1>Escolha o HEN</h1>
-      <p>Selecione o payload para iniciar o desbloqueio.</p>
+      <h1>Escolha uma opção</h1>
+      <p>Inicie o desbloqueio ou abra o catálogo de jogos.</p>
       <div class="hen-buttons">
         <button id="btn-hen" class="hen-button" type="button">HEN<small>hen.bin</small></button>
         <button id="btn-haidhen" class="hen-button" type="button">HaidHEN<small>haidhen.bin</small></button>
+        <button id="btn-games" class="hen-button" type="button">Games<small>TEST</small></button>
       </div>
     </div>
     <div id="spin"></div>
@@ -219,6 +223,7 @@
       const spin = document.getElementById("spin");
       const btnHen = document.getElementById("btn-hen");
       const btnHaidhen = document.getElementById("btn-haidhen");
+      const btnGames = document.getElementById("btn-games");
       let started = false;
 
       async function startHen(name) {
@@ -230,6 +235,7 @@
         spin.classList.add("active");
         btnHen.disabled = true;
         btnHaidhen.disabled = true;
+        btnGames.disabled = true;
         try {
           await import("./jb.js?v=21");
         } catch (error) {
@@ -242,6 +248,10 @@
 
       btnHen.addEventListener("click", () => startHen("hen"));
       btnHaidhen.addEventListener("click", () => startHen("haidhen"));
+      // Games e uma pagina independente: nunca inicia o exploit ao abrir a loja.
+      btnGames.addEventListener("click", () => {
+        if (!started) location.href = "game.html";
+      });
 
       // Um link antigo com #hen / #haidhen nao deve executar automaticamente.
       // Remove o fragmento sem navegar nem recarregar a pagina.

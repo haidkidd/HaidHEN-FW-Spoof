@@ -1,0 +1,34 @@
+HaidHEN Games TEST - atualização experimental
+===========================================
+
+O ZIP contém apenas os arquivos a adicionar/substituir no repositório.
+NÃO apague os outros arquivos do projeto (core.js, mem.js, int64.js, rpc_worker.js,
+logo_raw.png, hen.bin, haidhen.bin, payload2.bin, patches/).
+
+1. Envie os arquivos do ZIP para a RAIZ do repositório, mantendo a pasta pkgs/.
+2. Substitua os arquivos antigos quando o GitHub solicitar.
+3. Abra jb.html: aparecem HEN, HaidHEN e Games.
+4. Games abre game.html com tela de preparação e catálogo.
+5. Para adicionar arquivos, veja pkgs/README.md.
+
+FUNCIONA NESTA VERSÃO (ainda NÃO testado em hardware PS4):
+- Botão Games e interface separada.
+- Catálogo JSON e leitura automática opcional de .pkg na pasta via API do GitHub.
+- Links normais de download.
+- Tentativa experimental de integração com Remote Package Installer HTTP (porta 12800).
+- HEN e HaidHEN mantêm a lógica original; jb.js, index.html e ps4_offsets.js não foram alterados.
+- cache.appcache atualizado para a nova interface, sem colocar PKGs grandes no cache.
+
+AINDA NÃO FUNCIONA:
+- Envio automático de payload binário ao BinLoader TCP na porta 9090.
+- Notificação nativa do PS4 do tipo 'Escolha um jogo para baixar'.
+- Instalação garantida ou confirmação da instalação pelo navegador.
+- Armazenamento de jogos grandes em GitHub Pages.
+
+MOTIVO: O browser HTML/JS comum não tem acesso a TCP bruto, e o BinLoader não é
+uma API HTTP. Para implementar o fluxo completo será necessário criar, compilar e
+validar no PS4 um payload/serviço nativo compatível, além de solucionar restrições
+HTTPS->HTTP e CORS. NÃO foi incluído um binário fictício ou não verificado.
+
+Segurança: publique apenas pacotes próprios ou autorizados. Faça backup/teste no PS4;
+uma falha no payload ou no software de instalação pode travar o console.

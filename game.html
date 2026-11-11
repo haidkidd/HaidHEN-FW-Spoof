@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR" manifest="cache.appcache">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HaidHEN Games TEST | Team haidkidd</title>
+<style>
+  * { box-sizing: border-box; }
+  html,body { margin:0;min-height:100%;background:#0b0d10;color:#d7dde5;font:15px/1.5 "Segoe UI",system-ui,Arial,sans-serif; }
+  #brand {height:44px;display:flex;align-items:center;justify-content:center;gap:8px;background:#0e1116;border-bottom:1px solid #1e2732;}
+  #brand img {width:28px;height:28px;border-radius:50%} #brand b {font-size:15px;letter-spacing:.12em;color:#e6ebf2}
+  main {max-width:1000px;margin:0 auto;padding:28px 20px 64px}
+  h1 {font-size:27px;margin:0 0 10px;color:#edf2f9}h2{font-size:19px;margin:0 0 13px}
+  p {color:#9dadbf;margin:8px 0 17px}
+  .topline{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:15px;margin-bottom:28px}
+  .back{color:#a6c0df;text-decoration:none}.back:focus,.back:hover{text-decoration:underline}
+  .tag{font-size:12px;color:#adb9cb;border:1px solid #303b4a;padding:5px 9px;border-radius:20px}
+  .panel{background:#11161c;border:1px solid #29323c;border-radius:12px;padding:23px;margin-bottom:18px}
+  .muted{font-size:13px;color:#91a0b1}.note{background:#191a18;border-left:3px solid #b7975a;padding:13px 15px;margin:17px 0;border-radius:0 7px 7px 0;color:#dbcba9;font-size:13px}
+  button,.buttonlink{font:700 15px/1.2 "Segoe UI",system-ui,Arial,sans-serif;border-radius:8px;cursor:pointer;padding:14px 17px;border:1px solid #34714a;background:#1b4230;color:#c6efce}
+  button:hover,button:focus,.buttonlink:hover,.buttonlink:focus{background:#27583f;outline:2px solid #79bc99;outline-offset:2px}
+  button:disabled{opacity:.45;cursor:not-allowed;outline:0}
+  button.secondary{border-color:#445366;background:#1c2b3b;color:#c3d8f0}
+  button.secondary:hover,button.secondary:focus{background:#2a3d53}
+  button.tiny{padding:9px 12px;font-size:13px}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  #store{display:none}
+  .searchrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0 24px}
+  input{background:#0a0e13;color:#e4edf5;border:1px solid #384454;padding:13px 14px;border-radius:8px;font:15px "Segoe UI",system-ui,Arial,sans-serif;flex:1;min-width:210px}
+  .grid{display:flex;flex-wrap:wrap;gap:15px}
+  .game{width:calc(33.333% - 11px);min-width:230px;flex-grow:1;max-width:calc(50% - 8px);background:#121920;border:1px solid #2c3744;border-radius:11px;padding:16px;display:flex;flex-direction:column;gap:9px}
+  .game h3{font-size:17px;line-height:1.35;margin:0;color:#e7ecf4;overflow-wrap:anywhere}
+  .game p{margin:0;font-size:13px;line-height:1.4}
+  .game .detail{font-size:12px;color:#9dabc0;overflow-wrap:anywhere}
+  .game .gameactions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:6px}
+  .game .gameactions button,.game .gameactions a{font-size:13px;padding:10px 12px}
+  .game .gameactions a{background:#21334b;border:1px solid #426083;color:#cde0f3;border-radius:8px;text-decoration:none;font-weight:700}
+  .cover{width:100%;height:125px;object-fit:contain;background:#0b1016;border-radius:6px}
+  #status{white-space:pre-wrap;min-height:24px;padding:12px 14px;margin-top:18px;border:1px solid #303a46;border-radius:8px;background:#0b1117;color:#b4c4d5;font-size:13px}
+  #status[data-type="warn"]{border-color:#74623e;color:#e1c48b}#status[data-type="error"]{border-color:#7c4949;color:#e4acac}
+  #empty{display:none;text-align:center;border:1px dashed #3c4653;padding:30px;border-radius:9px}
+  .code{font:12px Consolas,monospace;color:#a8c2e4}
+  @media(max-width:650px){main{padding:20px 12px 50px}h1{font-size:23px}.panel{padding:16px}.game{width:100%;max-width:100%}}
+</style>
+</head>
+<body>
+<header id="brand"><img src="logo_raw.png" alt=""><b>Team haidkidd</b></header>
+<main>
+  <div class="topline"><a class="back" href="jb.html">&larr; Voltar ao HaidHEN</a><span class="tag">HaidHEN Games TEST</span></div>
+  <section id="setup" class="panel">
+    <h1>HaidHEN Games TEST</h1>
+    <p>Catálogo de arquivos PKG para usar no próprio navegador do PS4.</p>
+    <h2>Prepare o console</h2>
+    <p>1. Inicie o HEN ou HaidHEN normalmente.<br>2. Habilite o Payload Server (BinLoader), se o seu HEN oferecer essa opção.<br>3. Para instalação direta, é necessário também um instalador remoto compatível com a API HTTP na porta <span class="code">12800</span>.</p>
+    <div class="note"><b>Importante:</b> o Payload Server TCP da porta 9090 <b>não instala PKGs sozinho</b>. Esta versão não injeta um payload novo automaticamente. A página pode abrir o catálogo e tentar enviar comandos a um instalador HTTP já existente, sujeito às restrições do navegador.</div>
+    <div class="row"><button id="ready" type="button">Já preparei o PS4 — abrir Games</button><a href="https://github.com/flatz/ps4_remote_pkg_installer" target="_blank" rel="noopener" class="back">Sobre o Remote Package Installer</a></div>
+  </section>
+  <section id="store">
+    <div class="topline"><div><h1>Escolha um jogo para baixar</h1><p class="muted">PKGs próprios ou com autorização de distribuição.</p></div><button id="backSetup" type="button" class="secondary tiny">Configuração</button></div>
+    <div class="panel">
+      <h2>Instalação remota experimental</h2>
+      <p class="muted">Destino: <span class="code">http://127.0.0.1:12800</span> (o próprio PS4). O navegador pode bloquear as requisições HTTP/CORS. Um comando enviado não significa instalação concluída.</p>
+      <div class="row"><button id="testServer" class="secondary tiny" type="button">Testar servidor HTTP</button><span class="muted" id="serverLabel">Não verificado</span></div>
+    </div>
+    <div class="searchrow"><input id="search" type="search" placeholder="Buscar jogos no catálogo" aria-label="Buscar jogos"><button id="reload" class="secondary tiny" type="button">Atualizar lista</button></div>
+    <div id="games" class="grid" aria-live="polite"></div>
+    <div id="empty"><h2>Nenhum PKG no catálogo</h2><p>Adicione os arquivos na pasta <span class="code">pkgs/</span> e publique no GitHub. Para jogos maiores, use URLs autorizadas no arquivo <span class="code">pkgs/catalog.json</span>.</p></div>
+    <div id="status" role="status">Aguardando catálogo.</div>
+  </section>
+</main>
+<script src="games.js"></script>
+</body>
+</html>
